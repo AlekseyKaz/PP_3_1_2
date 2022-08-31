@@ -2,9 +2,7 @@ package ru.kata.spring.boot_security.demo.service;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.boot_security.demo.models.Role;
 import ru.kata.spring.boot_security.demo.models.User;
 import ru.kata.spring.boot_security.demo.repository.RoleRepository;
@@ -15,18 +13,14 @@ import java.util.List;
 public class UserServiceImpl implements UserService{
     private final RoleRepository roleRepository;
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
 @Autowired
-    public UserServiceImpl(RoleRepository roleRepository, UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserServiceImpl(RoleRepository roleRepository, UserRepository userRepository) {
         this.roleRepository = roleRepository;
         this.userRepository = userRepository;
-    this.passwordEncoder = passwordEncoder;
-}
+    }
 
     @Override
-    @Transactional
     public void save(User user) {
-//    user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
     }
 
@@ -41,7 +35,6 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    @Transactional
     public void delete(long id) {
         userRepository.deleteById(id);
     }
@@ -56,15 +49,25 @@ public class UserServiceImpl implements UserService{
         return userRepository.findByEmail(email);
     }
 
-//    @Override
-//    @Transactional
-//    public void editUser(long id, User user) {
-//        if(user.getPassword() == null|| user.getPassword().equals(userRepository.getById(id).getPassword())) {
-//            user.setPassword(user.getPassword());
-//        } else {
-//            user.setPassword(passwordEncoder.encode(user.getPassword()));
-//        }
-//        userRepository.save(user);
+//
+//    public User save(User user) {
+//        return userRepository.save(user);
 //    }
-
+//    public User findById(long id) {
+//        return userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid user Id:" + id));
+//    }
+//
+//    public void delete(User user) {
+//        userRepository.delete(user);
+//    }
+//
+//    public List<User> findAll() {
+//       return userRepository.findAll();
+//    }
+//    public List<Role> listRoles() {
+//        return roleRepository.findAll();
+//    }
+//    public User findByEmail(String email) {
+//        return userRepository.findByEmail(email);
+//    }
 }
